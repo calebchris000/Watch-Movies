@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\V1\Movies;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;

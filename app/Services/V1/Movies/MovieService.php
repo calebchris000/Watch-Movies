@@ -1,9 +1,8 @@
 <?php
-
-namespace App\Services;
+namespace App\Services\V1\Movies;
 
 use App\Models\Movie;
-use App\Services\IMovieService;
+use App\Services\V1\Movies\IMovieService;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
