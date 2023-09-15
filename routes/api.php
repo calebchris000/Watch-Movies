@@ -14,8 +14,19 @@ use App\Http\Controllers\MovieController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::group(['prefix' => ''], function () {
+    // List Movies
+    Route::get('/movies', 'App\Http\Controllers\MovieController@index');
 
-Route::apiResource('/movies', MovieController::class);
+    // Get Movie by ID
+    Route::get('/movies/{movie_id}', 'App\Http\Controllers\MovieController@show');
+
+    // Create a Movie
+    Route::post('/movies', 'App\Http\Controllers\MovieController@store');
+
+    // Update a Movie
+    Route::put('/movies/{movie_id}', 'App\Http\Controllers\MovieController@update');
+
+    // Delete a Movie
+    Route::delete('/movies/{movie_id}', 'App\Http\Controllers\MovieController@destroy');
+});

@@ -3,6 +3,7 @@ namespace App\Services\V1\Movies;
 
 use App\Models\Movie;
 use App\Services\V1\Movies\IMovieService;
+use App\Traits\ApiResponder;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MovieService implements IMovieService
 {
+    use ApiResponder;
     public function __construct(public Movie $movie_model)
     {
     }
@@ -30,15 +32,10 @@ class MovieService implements IMovieService
         return $movie;
     }
 
-    public function add_movie(array $data): array
+    public function add_movie(array $data): JsonResponse
     {
-        $get_movie = $this->movie_model->where('name', $data['name']);
-
-        if (isset($get_movie)) {
-            throw new Exception("A movie with the same name already exist");
-        }
         $new_movie = $this->movie_model->create($data);
-        return $new_movie;
+        return $this->showOne($new_movie, 201, 'created');
     }
 
     public function update_movie(array $data): JsonResponse | array
@@ -46,8 +43,13 @@ class MovieService implements IMovieService
         return [];
     }
 
-    public function delete_movie(Uuid $movie_id): array
+    public function delete_movie($movie_id): JsonResponse
     {
-        return [];
+        $get_movie = $this->movie_model->where('id', $movie_id)->delete();
+
+        if(!$get_movie) {
+            throw new NotFoundHttpException('Movie not found');
+        }
+        return response()->json(['message'=> "Delete"]);
     }
 }
