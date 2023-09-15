@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Nette\Utils\Json;
 
 trait ApiResponder
 {
@@ -48,11 +49,18 @@ trait ApiResponder
         ]);
     }
 
+    public function sendCount(int $count = 1)
+    {
+        return response()->json(
+            self::format_list(['delete count'=> $count])
+        );
+    }
+
     protected static function format_list(
-        Collection | Model  $data,
+        Collection |array | Model | Json  $data,
         string $status = 'success',
-        int $api_code = 100
+        int $status_code = 200
     ): array {
-        return ['data' => $data, 'status' => $status, 'api_code' => $api_code];
+        return ['data' => $data, 'status' => $status, 'status_code' => $status_code];
     }
 }
